@@ -82,7 +82,16 @@ This project is an AI-powered anime recommendation system that leverages large l
 - Defines instructions and guidelines for the LLM
 - Determines how the model should format and structure its responses
 
-**Recommender Class**
+**Recommender Class** - [📄 Full Documentation](src/recommender.md)
+- Core recommendation engine that orchestrates anime suggestions using retrieval-augmented generation
+- Combines vector database similarity search with LLM reasoning to produce personalized responses
+- Uses Groq's mixtral model with temperature=0 for consistent, safe recommendations (no fabrications)
+- Implements retrieval chain that automatically: searches vector DB → formats context → applies prompt → calls LLM
+- Generates natural language explanations for why each recommended anime matches user preferences
+- **Input:** User query (e.g., "action anime with deep plot")
+- **Process:** Retrieve similar anime → format with prompt → LLM generates response
+- **Output:** 3 anime recommendations with plot summaries and personalized explanations
+- **Use Case:** Powers the final recommendation delivery to end users through the web interface
 - Core recommendation engine that processes user queries
 - Implements the recommendation logic and algorithms
 
@@ -106,15 +115,34 @@ This project is an AI-powered anime recommendation system that leverages large l
 
 ### Phase 3: Deployment
 
-**Containerization with Docker**
-- **Dockerfile**: Contains instructions for containerizing the application, including dependencies and runtime configuration
+**Containerization with Docker** - [📄 Full Documentation](src/dockerfile.md)
+- Packages the entire application with all dependencies into a reusable container image
+- Ensures consistent behavior across different machines (development, testing, production)
+- Simplifies deployment by eliminating "it works on my machine" problems
+- Creates isolated environments where Python, installed packages, and application code run without interference
+- **Input:** Application code + requirements.txt + Dockerfile
+- **Process:** Build image → Create containers → Expose ports → Run application
+- **Output:** Container image ready to deploy anywhere Docker is installed
+- **Use Case:** Deploy to cloud platforms, share with team members, ensure reproducible environments
 
-**Kubernetes Deployment**
-- **Kubernetes Manifest Files**: Define deployment specifications including:
-  - Number of replicas for load balancing
-  - Node requirements and configurations
-  - Service definitions for accessibility
-  - Short form: K8s Deploy
+**Kubernetes Deployment** - [📄 Full Documentation](kubernetes.md)
+- Orchestration platform that automates deployment, scaling, and management of containerized applications
+- Key concepts: Clusters, Nodes, Pods, Deployments, Services
+- Provides self-healing (restarts failed containers), auto-scaling, and rolling updates
+- **Input:** Docker image + Kubernetes manifest (YAML configuration)
+- **Process:** Define desired state → Kubernetes maintains that state → Auto-scaling and recovery
+- **Output:** Highly available application across multiple replicas and machines
+- **Use Case:** Production deployments requiring reliability, scaling, and zero-downtime updates
+
+**Kubernetes Manifest (llmops-k8s.yaml)** - [📄 Full Documentation](src/llmops-k8s.md)
+- Single YAML file defining Deployment and Service for the application
+- **Deployment section:** Defines how many replicas, which image, environment variables via secrets
+- **Service section:** LoadBalancer type that exposes app externally and routes traffic to pods
+- **Secret management:** API keys injected securely into cluster instead of being in .env files
+- **Input:** Docker image (llmops-app:latest) + Secret credentials
+- **Process:** 1 replica pod created → LoadBalancer service exposes on port 80 → Routes to container port 8501
+- **Output:** Accessible web application at service IP/DNS
+- **Use Case:** Define complete deployment in version-controlled YAML file for consistency across environments
 
 **Cloud Infrastructure Setup**
 - **GCP VM Installation**: Sets up the virtual machine with three essential components:
@@ -418,3 +446,9 @@ docs/
 # Data_loader.py
 
 create a class and do operations to clean the csv by keeping the req cols, anim name, genre and synopsis
+
+# Result
+
+> streamlit run app/app.py
+
+![recommendation](images/result.png)
