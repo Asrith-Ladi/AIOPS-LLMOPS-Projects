@@ -51,9 +51,14 @@ This project is an AI-powered anime recommendation system that leverages large l
 - Loads and manages environment variables containing API keys and model configurations
 - Specifies which LLM and embedding models to use
 
-**Data Loader**
-- Extracts data from source files (CSV, JSON, etc.)
-- Processes and stores the data into Chroma DB for efficient retrieval
+**Data Loader** - [📄 Full Documentation](src/data_loader.md)
+- Reads anime data from CSV files with proper encoding handling
+- Validates that required columns (Name, Genres, Synopsis) exist
+- Combines anime information (title, synopsis, genres) into a single text field optimized for embedding generation
+- Removes incomplete records with missing values
+- Saves processed data for downstream components
+- **Input:** `data/anime_with_synopsis.csv` (~270 anime records from MyAnimeList)
+- **Output:** Processed CSV with combined anime information ready for embedding
 
 **Prompt Template**
 - Defines instructions and guidelines for the LLM
@@ -301,3 +306,88 @@ EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 ```
 
 ---
+
+## 📚 Detailed Documentation
+
+This **Overview.md** serves as an index for recreating the project from scratch. For detailed explanations of specific components, refer to the documentation files organized by project structure:
+
+### Core Components
+
+| Component | Documentation | Purpose |
+|-----------|---------------|---------|
+| **Data Loader** | [docs/src/data_loader.md](src/data_loader.md) | Load & process anime data from CSV, validate structure, prepare for embeddings |
+| **Logger** | [docs/utils/LOGGER.md](utils/LOGGER.md) | Centralized logging configuration and usage |
+| **Custom Exception** | [docs/utils/custom_exception.md](utils/custom_exception.md) | Application-specific error handling with detailed debugging info |
+| **Setup & Config** | [docs/SETUP.md](SETUP.md) | Package installation, configuration, and environment setup |
+
+### Documentation Structure
+
+The documentation is organized to mirror the project folder structure for easy navigation:
+
+```
+docs/
+├── Overview.md                    ← You are here (Project index)
+├── SETUP.md                       ← Setup and installation guide
+├── src/
+│   └── data_loader.md             ← Data loading and processing
+├── utils/
+│   ├── LOGGER.md                  ← Logging utilities
+│   └── custom_exception.md        ← Exception handling
+└── (More docs coming...)
+    └── embedding_generator.md     ← Vector generation
+    └── recommender.md             ← Recommendation engine
+    └── streamlit_app.md           ← Web UI
+```
+
+### How to Use This Documentation
+
+1. **For Project Recreation:** Start with [Overview.md](Overview.md) (this file)
+   - Follow Phase 1-5 to set up the entire project
+   - Contains all setup, API configuration, and installation steps
+
+2. **For Component Details:** Navigate to specific docs based on component
+   - Need to understand data loading? → See [docs/src/data_loader.md](src/data_loader.md)
+   - Need logging setup? → See [docs/utils/LOGGER.md](utils/LOGGER.md)
+   - Need error handling? → See [docs/utils/custom_exception.md](utils/custom_exception.md)
+
+3. **For Implementation Examples:** Each documentation file includes:
+   - Usage patterns with code examples
+   - Integration examples with other components
+   - Best practices and troubleshooting
+   - Common issues and solutions
+
+### Quick Links
+
+- 🚀 **Getting Started:** [Phase 1: Development Environment Setup](Overview.md#phase-1-development-environment-setup)
+- 🔑 **API Setup:** [Phase 2: API Configuration & Setup](Overview.md#phase-2-api-configuration--setup)
+- 📊 **Data Preparation:** [Phase 3: Data Preparation](Overview.md#phase-3-data-preparation)
+- 📦 **Dependencies:** [Phase 4: Project Structure & Dependencies](Overview.md#phase-4-project-structure--dependencies)
+- ⚙️ **Configuration:** [Phase 5: Configuration Module](Overview.md#phase-5-configuration-module)
+
+### Documentation Roadmap
+
+**Completed:**
+- ✅ Overview.md (Project Index)
+- ✅ docs/SETUP.md (Setup Guide)
+- ✅ docs/src/data_loader.md (Data Loading)
+- ✅ docs/utils/LOGGER.md (Logging)
+- ✅ docs/utils/custom_exception.md (Exception Handling)
+
+**Coming Soon:**
+- 🔄 docs/src/embedding_generator.md
+- 🔄 docs/src/recommender.md
+- 🔄 docs/src/prompt_template.md
+- 🔄 docs/app/streamlit_app.md
+- 🔄 docs/deployment/docker.md
+- 🔄 docs/deployment/kubernetes.md
+
+---
+
+**Last Updated:** February 21, 2026  
+**Author:** Ladi Asrith  
+**Repository:** [AIOPS-LLMOPS-Projects](https://github.com/Asrith-Ladi/AIOPS-LLMOPS-Projects)
+
+
+# Data_loader.py
+
+create a class and do operations to clean the csv by keeping the req cols, anim name, genre and synopsis
