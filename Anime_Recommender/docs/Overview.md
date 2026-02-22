@@ -60,7 +60,25 @@ This project is an AI-powered anime recommendation system that leverages large l
 - **Input:** `data/anime_with_synopsis.csv` (~270 anime records from MyAnimeList)
 - **Output:** Processed CSV with combined anime information ready for embedding
 
-**Prompt Template**
+**Vector Store** - [📄 Full Documentation](src/vector_store.md)
+- Converts processed anime text data into vector embeddings that capture semantic meaning
+- Uses HuggingFace's `sentence-transformers/all-MiniLM-L6-v2` model to generate numerical vector representations (384-dimensional embeddings)
+- Splits large text chunks into 1000-character segments for optimal embedding accuracy
+- Stores all embeddings in Chroma vector database for fast similarity searches
+- Enables persistent storage on disk so vectors can be reused without regeneration
+- **Input:** Processed anime data with combined information
+- **Output:** Vector database (Chroma DB) with 384-dimensional embeddings for semantic similarity matching
+- **Use Case:** Powers intelligent anime search by finding similar anime based on semantic meaning rather than exact keyword matches
+
+**Prompt Template** - [📄 Full Documentation](src/prompt_template.md)
+- Defines the instructions and guidelines that control how the LLM (Groq) behaves when making recommendations
+- Specifies exactly what information to include (anime title, plot summary, matching explanation)
+- Enforces consistency by defining output format (numbered list of 3 recommendations)
+- Includes safety constraints to prevent the LLM from fabricating non-existent anime or false information
+- Acts as a bridge between retrieved context data and LLM processing
+- **Input:** Context (retrieved anime data from vector DB) and user question
+- **Output:** Structured LLM instructions that produce consistent, formatted recommendations
+- **Use Case:** Ensures every recommendation follows the same high-quality, professional format with accurate information
 - Defines instructions and guidelines for the LLM
 - Determines how the model should format and structure its responses
 
@@ -68,7 +86,16 @@ This project is an AI-powered anime recommendation system that leverages large l
 - Core recommendation engine that processes user queries
 - Implements the recommendation logic and algorithms
 
-**Training & Recommendation Pipeline**
+**Training & Recommendation Pipeline** - [📄 Full Documentation](src/pipeline.md)
+- Automates the complete data processing workflow from raw CSV to ready-to-use vector database
+- Orchestrates three sequential operations: data loading, text processing, and embedding generation
+- Handles cross-platform file path resolution so it works regardless of where the script is run from
+- Implements robust error handling with detailed logging at each processing step
+- Creates persistent vector database (Chroma DB) for fast similarity-based anime searches
+- **Input:** Raw anime CSV file (`anime_with_synopsis.csv`)
+- **Process:** Validates → Combines fields → Creates embeddings → Stores in database
+- **Output:** Vector database (chroma_db/) ready for recommendation queries
+- **Use Case:** One-time setup to prepare the system; can be re-run to update with new anime data
 - Trains the recommendation system using loaded data converted to vectors
 - Processes user queries and returns personalized recommendations
 - Handles real-time inference and response generation

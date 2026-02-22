@@ -24,5 +24,5 @@ class VectorStoreBuilder:
         
         db.persist() # chroma can be both online and offline
     
-    def load_vectorstore(self):
+    def load_vector_store(self):
         return Chroma(persist_directory = self.persis_dir, embedding_function=self.embeddings)
