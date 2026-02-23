@@ -2,9 +2,24 @@
 
 ![AI Anime Recommender](images/AI%20Anime%20Recommender.png)
 
-## Project Overview
+## Documentation Index (quick links)
 
-This project is an AI-powered anime recommendation system that leverages large language models (LLMs) and vector databases to provide intelligent recommendations based on user preferences and data analysis.
+- Overview & beginner guide: [Overview.md](Overview.md)  
+- Core module docs (in docs/src):
+  - [data_loader.md](src/data_loader.md)
+  - [vector_store.md](src/vector_store.md)
+  - [prompt_template.md](src/prompt_template.md)
+  - [pipeline.md](src/pipeline.md)
+  - [recommender.md](src/recommender.md)
+  - [llmops-k8s.md](src/llmops-k8s.md)
+- Additional docs (top-level `docs/`):
+  - [GCP_setup.md](GCP_setup.md)
+  - [kubernetes.md](kubernetes.md)
+  - [dockerfile.md](dockerfile.md)
+  - [dockerfile_des.md](dockerfile_des.md)
+  - `Project_setup.md` (screenshots of GCP → Minikube → Grafana → Git integration). Consider converting this `.docx` into `Project_setup.md` for easier viewing in the repo.
+
+**Why this page exists:** This file is the project interface — a concise, beginner-friendly starting point that links to each subsystem's detailed documentation. Read this first, follow the step-by-step sections below, and jump to the linked docs for deep dives.
 
 ---
 
@@ -438,7 +453,7 @@ docs/
 
 ---
 
-**Last Updated:** February 21, 2026  
+**Last Updated:** February 23, 2026  
 **Author:** Ladi Asrith  
 **Repository:** [AIOPS-LLMOPS-Projects](https://github.com/Asrith-Ladi/AIOPS-LLMOPS-Projects)
 
